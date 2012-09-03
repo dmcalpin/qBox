@@ -32,9 +32,7 @@ var qBox = (function(){
 		mask = getOrCreateElementById("qbMask");
 		
 		mask.style.display = "block";
-		mask.onclick = function(){
-			hideModal(settings.onClose);
-		}
+		
 	}
 	
 	function showContent(){
@@ -57,6 +55,7 @@ var qBox = (function(){
 	
 	function hideMask(){
 		mask.style.display = "none";
+		mask.onclick = null;
 	}
 	
 	function hideContent(){
@@ -80,11 +79,13 @@ var qBox = (function(){
 			}
 		}
 		
+		showMask();
+		
 		if(settings.modal == false){
-			showMask();
-		} else {
-			mask.onclick = null;	
-		}
+			mask.onclick = function(){
+				hideModal();
+			}
+		} 
 		
 		showContent();
 	

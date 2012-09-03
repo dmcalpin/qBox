@@ -2,7 +2,50 @@
 <html>
 	<head>
 		<link rel="stylesheet" href="qbox.css"></link>
+		<style>
+			#qbContent.blueBackground { background-color:#ACF; border:2px solid #00f;}
+		</style>
+		
 		<script src="qbox.js"></script>
+		<script>
+			window.onload = function(){
+				
+				document.getElementById("defaultPop").onclick = function(e){
+					e.preventDefault();
+					qBox.show({ 
+						html : "<h1>Standard Popup</h1>"
+					});
+				}
+				
+				document.getElementById("modalPop").onclick = function(e){
+					e.preventDefault();
+					qBox.show({ 
+						html : "<h1>Modal Popup</h1>",
+						modal : true
+					});
+				}
+				
+				document.getElementById("noClosePop").onclick = function(e){
+					e.preventDefault();
+					qBox.show({ 
+						html : "<h1>No Close Button Popup</h1>",
+						showClose : false
+					});
+				}
+				
+				document.getElementById("callbackPop").onclick = function(e){
+					e.preventDefault();
+					qBox.show({ 
+						html : "<h1>Callbacks</h1><p>I also have a unique classname, and special close button html</p>",
+						onOpen : function(){ alert('on open'); },
+						onClose : function(){ alert('on close'); },
+						closeHTML : "<b>Close</b>",
+						className : "blueBackground"
+					});
+				}
+				
+			}
+		</script>
 	</head>
 	<body style="height:1000;">
 		<header>
@@ -10,6 +53,12 @@
 		</header>
 		<section>
 			<p>This is the qbox test page</p>
+			<ul>
+				<li><a href="#" id="defaultPop">Popup with no config, just default values</a></li>
+				<li><a href="#" id="modalPop">Pop with modal true (cant click mask to close)</a></li>
+				<li><a href="#" id="noClosePop">Popup with no close button</a></li>
+				<li><a href="#" id="callbackPop">Popup with callbacks and custom close html</a></li>
+			</ul>
 		</section>
 	</body>
 </html>
