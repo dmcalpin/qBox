@@ -53,6 +53,13 @@
 					});
 				}
 				
+				document.getElementById("queuePop").onclick = function(e){
+					e.preventDefault();
+					
+					qBox.show({html:"123", onOpen : function(){alert('123 open')}, onClose : function(){alert('123 close')} });
+					qBox.show({html:"456", className : "blueBackground" });
+					qBox.show({html:"789", onOpen : function(){alert('789 open')}, onClose : function(){alert('789 close')} });
+				}
 			}
 		</script>
 	</head>
@@ -68,6 +75,7 @@
 				<li><a href="#" id="noClosePop">Popup with no close button</a></li>
 				<li><a href="#" id="callbackPop">Popup with callbacks and custom close html</a></li>
 				<li><a href="#" id="noAutoPop">Popup not auto centered and custom close button ID</a></li>
+				<li><a href="#" id="queuePop">Popups will be queued if you try to open many at the same time</a></li>
 			</ul>
 		</section>
 	</body>

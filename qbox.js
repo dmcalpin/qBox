@@ -1,7 +1,7 @@
 // QuickBox
 var qBox = (function(){
 
-	var settings, mask, content, closeButton;
+	var settings, mask, content, closeButton, queue = [], active = false;
 	
 	function centerContent(){
 		var browserCenterX = window.innerWidth / 2;
@@ -62,44 +62,51 @@ var qBox = (function(){
 	}
 	
 	function showModal(options){
-		settings = { 
-			html : "",
-			modal : false,		// Will clicking the mask close the popup
-			showClose : true,	// Show the 'X' in the corner of the popup
-			onOpen : function(){},
-			onClose : function(){},
-			className : "",
-			closeHTML : "&#x2716;", // A special 'X'
-			maskId : "qbMask",
-			contentId : "qbContent",
-			closeId : "qbClose",
-			autoCenter : true 
-		};
-		
-		for(o in options){
-			if(options.hasOwnProperty(o) ){
-				settings[o] = options[o];
-			}
-		}
-		
-		showMask();
-		
-		if(settings.modal == false){
-			mask.onclick = function(){
-				hideModal();
-			}
-		} 
-		
-		showContent();
-	
-		if(settings.autoCenter){
-			centerContent();
-			window.onresize = function(){
-				setTimeout(centerContent, 25);
+		queue.push(function(){
+			settings = { 
+				html : "",
+				modal : false,		// Will clicking the mask close the popup
+				showClose : true,	// Show the 'X' in the corner of the popup
+				onOpen : function(){},
+				onClose : function(){},
+				className : "",
+				closeHTML : "&#x2716;", // A special 'X'
+				maskId : "qbMask",
+				contentId : "qbContent",
+				closeId : "qbClose",
+				autoCenter : true 
 			};
-		}
 		
-		settings.onOpen();
+			for(o in options){
+				if(options.hasOwnProperty(o) ){
+					settings[o] = options[o];
+				}
+			}
+		
+			showMask();
+		
+			if(settings.modal == false){
+				mask.onclick = function(){
+					hideModal();
+				}
+			} 
+		
+			showContent();
+	
+			if(settings.autoCenter){
+				centerContent();
+				window.onresize = function(){
+					setTimeout(centerContent, 25);
+				};
+			}
+		
+			settings.onOpen();
+		});
+		
+		if(!active && queue.length > 0){
+			queue.shift()();
+			active = true;
+		}
 	}
 	
 	function hideModal(){
@@ -109,6 +116,13 @@ var qBox = (function(){
 		window.onresize = null;
 		
 		settings.onClose();
+		
+		if(queue.length > 0){
+			queue.shift()();
+			active = true;
+		} else {
+			active = false;
+		}
 	}
 	
 	return {
