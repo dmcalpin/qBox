@@ -29,21 +29,20 @@ var qBox = (function(){
 	}
 	
 	function showMask(){
-		mask = getOrCreateElementById("qbMask");
+		mask = getOrCreateElementById(settings.maskId);
 		
 		mask.style.display = "block";
-		
 	}
 	
 	function showContent(){
-		content = getOrCreateElementById("qbContent");
+		content = getOrCreateElementById(settings.contentId);
 		
 		content.style.display = "block";
 		content.className = settings.className;
 		content.innerHTML = settings.html;
 		
 		if(settings.showClose == true){
-			closeButton = getOrCreateElementById("qbClose", content.id);
+			closeButton = getOrCreateElementById(settings.closeId, content.id);
 			
 			closeButton.onclick = function(){
 				hideModal();
@@ -70,7 +69,11 @@ var qBox = (function(){
 			onOpen : function(){},
 			onClose : function(){},
 			className : "",
-			closeHTML : "&#x2716;"
+			closeHTML : "&#x2716;", // A special 'X'
+			maskId : "qbMask",
+			contentId : "qbContent",
+			closeId : "qbClose",
+			autoCenter : true 
 		};
 		
 		for(o in options){
@@ -89,10 +92,12 @@ var qBox = (function(){
 		
 		showContent();
 	
-		centerContent();
-		window.onresize = function(){
-			setTimeout(centerContent, 25);
-		};
+		if(settings.autoCenter){
+			centerContent();
+			window.onresize = function(){
+				setTimeout(centerContent, 25);
+			};
+		}
 		
 		settings.onOpen();
 	}

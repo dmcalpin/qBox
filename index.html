@@ -44,6 +44,15 @@
 					});
 				}
 				
+				document.getElementById("noAutoPop").onclick = function(e){
+					e.preventDefault();
+					qBox.show({ 
+						html : "<h1>Not Auto Centered</h1><p>Also, my close button has a custom ID</p>",
+						autoCenter : false,
+						closeId : "customCloseID"
+					});
+				}
+				
 			}
 		</script>
 	</head>
@@ -58,6 +67,7 @@
 				<li><a href="#" id="modalPop">Pop with modal true (cant click mask to close)</a></li>
 				<li><a href="#" id="noClosePop">Popup with no close button</a></li>
 				<li><a href="#" id="callbackPop">Popup with callbacks and custom close html</a></li>
+				<li><a href="#" id="noAutoPop">Popup not auto centered and custom close button ID</a></li>
 			</ul>
 		</section>
 	</body>

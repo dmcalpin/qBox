@@ -12,8 +12,7 @@
 
 #qbContent { 
 	position: fixed; 
-	width:200px; 
-	height:150px; 
+	width:300px; 
 	background-color:#eee; 
 	z-index:501; 
 	padding:10px; 
