@@ -1,7 +1,41 @@
 // QuickBox
 var qBox = (function(){
-
-	var settings, mask, content, closeButton, queue = [], active = false;
+	var settings = {}, 
+	 	defaults = {}, 
+		mask, 
+		content, 
+		closeButton, 
+		queue = [], 
+		active = false,
+		initialDefaults = { 
+			html : "",
+			modal : false,		// Will clicking the mask close the popup
+			showClose : true,	// Show the 'X' in the corner of the popup
+			onOpen : function(){},
+			onClose : function(){},
+			className : "",
+			closeHTML : "&#x2716;", // A special 'X'
+			maskId : "qbMask",
+			contentId : "qbContent",
+			closeId : "qbClose",
+			autoCenter : true 
+		};
+	
+	function extend(toObject, fromObject){
+		for(o in fromObject){
+			if(fromObject.hasOwnProperty(o) ){
+				toObject[o] = fromObject[o];
+			}
+		}
+	}
+	
+	function setDefaults(options){ // Set global defaults, passing nothing resets the defaults
+		if(options){
+			extend(defaults, options);
+		} else {
+			extend(defaults, initialDefaults);
+		}
+	}
 	
 	function centerContent(){
 		var browserCenterX = window.innerWidth / 2;
@@ -63,26 +97,10 @@ var qBox = (function(){
 	
 	function showModal(options){
 		queue.push(function(){
-			settings = { 
-				html : "",
-				modal : false,		// Will clicking the mask close the popup
-				showClose : true,	// Show the 'X' in the corner of the popup
-				onOpen : function(){},
-				onClose : function(){},
-				className : "",
-				closeHTML : "&#x2716;", // A special 'X'
-				maskId : "qbMask",
-				contentId : "qbContent",
-				closeId : "qbClose",
-				autoCenter : true 
-			};
+			extend(settings, defaults);
 		
-			for(o in options){
-				if(options.hasOwnProperty(o) ){
-					settings[o] = options[o];
-				}
-			}
-		
+			extend(settings, options);
+			
 			showMask();
 		
 			if(settings.modal == false){
@@ -114,6 +132,8 @@ var qBox = (function(){
 		hideContent();
 		
 		window.onresize = null;
+		content.style.top = "auto";
+		content.style.left = "auto";
 		
 		settings.onClose();
 		
@@ -125,9 +145,12 @@ var qBox = (function(){
 		}
 	}
 	
+	extend(defaults, initialDefaults); // init the default settings
+	
 	return {
 		show : showModal,
 		hide : hideModal,
+		setDefaults : setDefaults,
 		center : centerContent
 	};
 	

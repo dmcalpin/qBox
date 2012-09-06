@@ -13,7 +13,12 @@ To hide, you can call:
 	
 but it will also hide by default via clicking the mask, or the close button.
 
+You can also to a global override to defaults via the setDefaults function
+
+	qBox.setDefaults({ className : "myClass"}) // no all qboxes will have "myClass" by default
+
 Configuration Defaults:
+
 	{ 
 		html : "",
 		modal : false,		// Will clicking the mask close the popup
