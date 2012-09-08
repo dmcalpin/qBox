@@ -1,13 +1,12 @@
 // QuickBox
 var qBox = (function(){
 	var settings = {}, 
-	 	defaults = {}, 
-		mask, 
+	 	mask, 
 		content, 
 		closeButton, 
-		queue = [], 
+		queue = [],
 		active = false,
-		initialDefaults = { 
+		defaults = { 
 			html : "",
 			modal : false,		// Will clicking the mask close the popup
 			showClose : true,	// Show the 'X' in the corner of the popup
@@ -27,25 +26,12 @@ var qBox = (function(){
 				toObject[o] = fromObject[o];
 			}
 		}
-	}
-	
-	function setDefaults(options){ // Set global defaults, passing nothing resets the defaults
-		if(options){
-			extend(defaults, options);
-		} else {
-			extend(defaults, initialDefaults);
-		}
+		return toObject;
 	}
 	
 	function centerContent(){
-		var browserCenterX = window.innerWidth / 2;
-		var browserCenterY = window.innerHeight / 2;
-
-		var contentCenterX = content.offsetWidth / 2;
-		var contentCenterY = content.offsetHeight / 2;
-
-		content.style.left = browserCenterX - contentCenterX + "px";
-		content.style.top = browserCenterY - contentCenterY + "px";
+		content.style.left = "50%";
+		content.style.marginLeft = "-" + content.offsetWidth / 2 + "px";
 	}
 	
 	function getOrCreateElementById(id, parentElemId){
@@ -92,14 +78,20 @@ var qBox = (function(){
 	}
 	
 	function hideContent(){
+		window.onresize = null;
+		content.style.left = "auto";
+		content.style.marginLeft = "auto";
 		content.style.display = "none";
 	}
 	
 	function showModal(options){
-		queue.push(function(){
-			extend(settings, defaults);
+		extend(settings, defaults);
+		extend(settings, options);
 		
-			extend(settings, options);
+		if(!active){
+			active = true;
+			
+			settings = queue.shift() || settings;
 			
 			showMask();
 		
@@ -119,11 +111,8 @@ var qBox = (function(){
 			}
 		
 			settings.onOpen();
-		});
-		
-		if(!active && queue.length > 0){
-			queue.shift()();
-			active = true;
+		} else {
+			queue.push( extend({}, settings) );
 		}
 	}
 	
@@ -131,26 +120,18 @@ var qBox = (function(){
 		hideMask();
 		hideContent();
 		
-		window.onresize = null;
-		content.style.top = "auto";
-		content.style.left = "auto";
-		
 		settings.onClose();
 		
+		active = false;
+		
 		if(queue.length > 0){
-			queue.shift()();
-			active = true;
-		} else {
-			active = false;
-		}
+			showModal();
+		} 
 	}
-	
-	extend(defaults, initialDefaults); // init the default settings
 	
 	return {
 		show : showModal,
 		hide : hideModal,
-		setDefaults : setDefaults,
 		center : centerContent
 	};
 	

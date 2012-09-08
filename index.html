@@ -4,10 +4,38 @@
 		<link rel="stylesheet" href="qbox.css"></link>
 		<style>
 			#qbContent.blueBackground { background-color:#ACF; border:2px solid #00f;}
+			#loading {
+				position: fixed; 
+				background-color:#eee; 
+				z-index:5001; 
+				top:50%;
+				width:100px;
+				text-align:center;
+				font-size:15px;
+				font-weight:bold;
+				padding:10px;
+				border:1px solid #aaa;
+			}
+			#loadingMask { 
+				position: fixed; 
+				top: 0; 
+				left: 0;
+				width:100%; 
+				height:100%; 
+				background-color:#fff; 
+				opacity:.5; 
+				filter: alpha(opacity=50); 
+				z-index:5000; 
+			}
 		</style>
 		
 		<script src="qbox.js"></script>
 		<script>
+		
+			function showLoading(){
+				qBox.show({html : "Loading...", maskId : "loadingMask", contentId : "loading" });
+			}
+			
 			window.onload = function(){
 				
 				
@@ -61,6 +89,16 @@
 					qBox.show({html:"456", className : "blueBackground" });
 					qBox.show({html:"789", onOpen : function(){alert('789 open')}, onClose : function(){alert('789 close')} });
 				}
+				
+				document.getElementById("multiPop").onclick = function(e){
+					e.preventDefault();
+					
+					qBox.show({html:"123" });
+					showLoading()
+					qBox.show({html:"456", className : "blueBackground" });
+					showLoading()
+					qBox.show({html:"789" });
+				}
 			}
 		</script>
 	</head>
@@ -77,6 +115,7 @@
 				<li><a href="#" id="callbackPop">Popup with callbacks and custom close html</a></li>
 				<li><a href="#" id="noAutoPop">Popup not auto centered and custom close button ID</a></li>
 				<li><a href="#" id="queuePop">Popups will be queued if you try to open many at the same time</a></li>
+				<li><a href="#" id="multiPop">Multiple types of popups</a></li>
 			</ul>
 		</section>
 	</body>
