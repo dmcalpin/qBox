@@ -5,17 +5,14 @@ A light-weight javascript popup that is easy to use.
 
 Once the script is included, you can call the popup like this:
 
-	qBox.show({ html : "my html" });
+	var qBox = new QBox({ html : "my html" });
+	qBox.show();
 	
 To hide, you can call:
 
 	qBox.hide()
 	
 but it will also hide by default via clicking the mask, or the close button.
-
-You can also to a global override to defaults via the setDefaults function
-
-	qBox.setDefaults({ className : "myClass"}) // no all qboxes will have "myClass" by default
 
 Configuration Defaults:
 

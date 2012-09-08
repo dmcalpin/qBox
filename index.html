@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="qbox.css"></link>
+		<link rel="stylesheet" href="Qbox.css"></link>
 		<style>
 			#qbContent.blueBackground { background-color:#ACF; border:2px solid #00f;}
 			#loading {
@@ -29,11 +29,12 @@
 			}
 		</style>
 		
-		<script src="qbox.js"></script>
+		<script src="Qbox.js"></script>
 		<script>
 		
 			function showLoading(){
-				qBox.show({html : "Loading...", maskId : "loadingMask", contentId : "loading" });
+				window.loadingBox = new QBox({html : "Loading...", maskId : "loadingMask", contentId : "loading", showClose : false });
+				loadingBox.show();
 			}
 			
 			window.onload = function(){
@@ -41,63 +42,52 @@
 				
 				document.getElementById("defaultPop").onclick = function(e){
 					e.preventDefault();
-					qBox.show({ 
-						html : "<h1>Standard Popup</h1>"
-					});
+					var qBox = new QBox({ html : "<h1>Standard Popup</h1>" });
+					qBox.show();
 				}
 				
 				document.getElementById("modalPop").onclick = function(e){
 					e.preventDefault();
-					qBox.show({ 
-						html : "<h1>Modal Popup</h1>",
-						modal : true
-					});
+					var qBox = new QBox({ html : "<h1>Modal Popup</h1>", modal : true });
+					qBox.show();
 				}
 				
 				document.getElementById("noClosePop").onclick = function(e){
 					e.preventDefault();
-					qBox.show({ 
-						html : "<h1>No Close Button Popup</h1>",
-						showClose : false
-					});
+					var qBox = new QBox({ html : "<h1>No Close Button Popup</h1>", showClose : false });
+					qBox.show();
 				}
 				
 				document.getElementById("callbackPop").onclick = function(e){
 					e.preventDefault();
-					qBox.show({ 
+					var qBox = new QBox({ 
 						html : "<h1>Callbacks</h1><p>I also have a unique classname, and special close button html</p>",
 						onOpen : function(){ alert('on open'); },
 						onClose : function(){ alert('on close'); },
 						closeHTML : "<b>Close</b>",
 						className : "blueBackground"
 					});
+					qBox.show();
 				}
 				
 				document.getElementById("noAutoPop").onclick = function(e){
 					e.preventDefault();
-					qBox.show({ 
+					var qBox = new QBox({ 
 						html : "<h1>Not Auto Centered</h1><p>Also, my close button has a custom ID</p>",
 						autoCenter : false,
 						closeId : "customCloseID"
 					});
-				}
-				
-				document.getElementById("queuePop").onclick = function(e){
-					e.preventDefault();
-					
-					qBox.show({html:"123", onOpen : function(){alert('123 open')}, onClose : function(){alert('123 close')} });
-					qBox.show({html:"456", className : "blueBackground" });
-					qBox.show({html:"789", onOpen : function(){alert('789 open')}, onClose : function(){alert('789 close')} });
+					qBox.show();
 				}
 				
 				document.getElementById("multiPop").onclick = function(e){
 					e.preventDefault();
 					
-					qBox.show({html:"123" });
+					window.qBox1 = new QBox({html:"123" });
+					
+					qBox1.show();
 					showLoading()
-					qBox.show({html:"456", className : "blueBackground" });
-					showLoading()
-					qBox.show({html:"789" });
+					
 				}
 			}
 		</script>
@@ -114,7 +104,6 @@
 				<li><a href="#" id="noClosePop">Popup with no close button</a></li>
 				<li><a href="#" id="callbackPop">Popup with callbacks and custom close html</a></li>
 				<li><a href="#" id="noAutoPop">Popup not auto centered and custom close button ID</a></li>
-				<li><a href="#" id="queuePop">Popups will be queued if you try to open many at the same time</a></li>
 				<li><a href="#" id="multiPop">Multiple types of popups</a></li>
 			</ul>
 		</section>

@@ -1,12 +1,35 @@
 // QuickBox
-var qBox = (function(){
-	var settings = {}, 
-	 	mask, 
-		content, 
-		closeButton, 
-		queue = [],
-		active = false,
-		defaults = { 
+var QBox = (function(){
+	
+	// Private Static functions
+	function extend(toObject, fromObject){
+		for(o in fromObject){
+			if(fromObject.hasOwnProperty(o) ){
+				toObject[o] = fromObject[o];
+			}
+		}
+		return toObject;
+	}
+	
+	function centerContent(content){
+		content.style.left = "50%";
+		content.style.marginLeft = "-" + content.offsetWidth / 2 + "px";
+	}
+	
+	function createElement(id, parentElemId){
+		var parentElem = parentElemId ? document.getElementById(parentElemId) : document.body;
+		
+		elem = document.createElement("div");
+		elem.id = id;
+			
+		parentElem.appendChild(elem);
+		
+		return elem;
+	}
+	
+	return function(options){
+		// Private Class Attributes
+		var settings = { 
 			html : "",
 			modal : false,		// Will clicking the mask close the popup
 			showClose : true,	// Show the 'X' in the corner of the popup
@@ -18,121 +41,88 @@ var qBox = (function(){
 			contentId : "qbContent",
 			closeId : "qbClose",
 			autoCenter : true 
-		};
-	
-	function extend(toObject, fromObject){
-		for(o in fromObject){
-			if(fromObject.hasOwnProperty(o) ){
-				toObject[o] = fromObject[o];
-			}
-		}
-		return toObject;
-	}
-	
-	function centerContent(){
-		content.style.left = "50%";
-		content.style.marginLeft = "-" + content.offsetWidth / 2 + "px";
-	}
-	
-	function getOrCreateElementById(id, parentElemId){
-		var parentElem = parentElemId ? document.getElementById(parentElemId) : document.body;
-		var elem = document.getElementById(id);
+		}; 
 		
-		if(elem == null){
-			elem = document.createElement("div");
-			elem.id = id;
+		var	mask,
+			content, 
+			closeButton;
 			
-			parentElem.appendChild(elem);
-		}
-		
-		return elem;
-	}
-	
-	function showMask(){
-		mask = getOrCreateElementById(settings.maskId);
-		
-		mask.style.display = "block";
-	}
-	
-	function showContent(){
-		content = getOrCreateElementById(settings.contentId);
-		
-		content.style.display = "block";
-		content.className = settings.className;
-		content.innerHTML = settings.html;
-		
-		if(settings.showClose == true){
-			closeButton = getOrCreateElementById(settings.closeId, content.id);
-			
-			closeButton.onclick = function(){
-				hideModal();
-			}
-			
-			closeButton.innerHTML = settings.closeHTML;
-		}
-	}
-	
-	function hideMask(){
-		mask.style.display = "none";
-		mask.onclick = null;
-	}
-	
-	function hideContent(){
-		window.onresize = null;
-		content.style.left = "auto";
-		content.style.marginLeft = "auto";
-		content.style.display = "none";
-	}
-	
-	function showModal(options){
-		extend(settings, defaults);
+		// Run when class is instantiated
 		extend(settings, options);
 		
-		if(!active){
-			active = true;
-			
-			settings = queue.shift() || settings;
-			
-			showMask();
+		// Private Class Methods
+		function createMask(){
+			mask = createElement(settings.maskId);
+
+			mask.style.display = "block";
+		}
+
+		function createContent(){
+			content = createElement(settings.contentId);
+
+			content.style.display = "block";
+			content.className = settings.className;
+			content.innerHTML = settings.html;
+		}
 		
+		function createCloseButton(){
+			closeButton = createElement(settings.closeId, content.id);
+
+			closeButton.onclick = function(){
+				hidePopup();
+			}
+
+			closeButton.innerHTML = settings.closeHTML;
+			
+		}
+	
+		function showPopup(){
+			createMask();
+
 			if(settings.modal == false){
 				mask.onclick = function(){
-					hideModal();
+					hidePopup();
 				}
 			} 
-		
-			showContent();
-	
+
+			createContent();
+
 			if(settings.autoCenter){
-				centerContent();
+				centerContent(content);
 				window.onresize = function(){
 					setTimeout(centerContent, 25);
 				};
 			}
-		
+			
+			if(settings.showClose == true){
+				createCloseButton();
+			}
+
 			settings.onOpen();
-		} else {
-			queue.push( extend({}, settings) );
+
 		}
-	}
-	
-	function hideModal(){
-		hideMask();
-		hideContent();
+
+		function hidePopup(){
+			// Hide Mask
+			document.body.removeChild(mask);
 		
-		settings.onClose();
+			// Hide Content
+			document.body.removeChild(content);
+			
+			window.onresize = null;
+			
+			settings.onClose();
+		}
 		
-		active = false;
-		
-		if(queue.length > 0){
-			showModal();
-		} 
-	}
-	
-	return {
-		show : showModal,
-		hide : hideModal,
-		center : centerContent
+		// Public Class Methods
+		this.show = showPopup;
+		this.hide = hidePopup;
+		this.settings = function(){
+			return settings;
+		}
 	};
 	
 })();
+
+
+
