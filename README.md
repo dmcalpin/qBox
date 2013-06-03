@@ -26,6 +26,5 @@ Configuration Defaults:
 		closeHTML : "&#x2716;", // A special 'X'
 		maskId : "qbMask",
 		contentId : "qbContent",
-		closeId : "qbClose",
-		autoCenter : true
+		closeId : "qbClose"
 	}
