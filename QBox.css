@@ -1,4 +1,4 @@
-#qbMask { 
+.qbMask { 
 	position: fixed; 
 	top: 0; 
 	left: 0;
@@ -9,11 +9,14 @@
 	z-index: 500;
 	text-align: center;
 }
+.qbMask.qbBlurBackground ~ * {
+	-webkit-filter: blur(3px);
+}
 
-#qbContent { 
+.qbContent { 
 	width:300px; 
-	margin: 10em auto 0;
 	position: relative;
+	text-align: left;
 	background-color:#eee; 
 	z-index:501; 
 	padding:10px; 
@@ -21,14 +24,13 @@
 	border-radius:5px; 
 	box-shadow:0 0 10px #000;
 }
-
-#qbClose { 
-	position: absolute; 
-	top:5px; 
-	right: 5px;
+.qbAutoCenter .qbContent {
+	margin: 10em auto 0;
 }
 
-#qbClose:hover { 
-	color:#f00; 
+.qbClose { 
+	position: absolute; 
+	top: 5px; 
+	right: 5px;
 	cursor:pointer; 
 }

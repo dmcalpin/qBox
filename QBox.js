@@ -17,7 +17,9 @@ var QBox = (function(){
 		elem = document.createElement("div");
 		elem.id = id;
 			
-		parentElem.appendChild(elem);
+		// parentElem.appendChild(elem);
+
+		parentElem.insertBefore(elem, parentElem.firstChild);
 		
 		return elem;
 	}
@@ -34,7 +36,9 @@ var QBox = (function(){
 			closeHTML : "&#x2716;", // A special 'X'
 			maskId : "qbMask",
 			contentId : "qbContent",
-			closeId : "qbClose"
+			closeId : "qbClose",
+			autoCenter : true,
+			blurBackground : true
 		}; 
 		
 		var	mask,
@@ -49,13 +53,16 @@ var QBox = (function(){
 			mask = createElement(settings.maskId);
 
 			mask.style.display = "block";
+			mask.className = "qbMask";
+			mask.className += settings.blurBackground ? " qbBlurBackground" : "";
+			mask.className += settings.autoCenter ? " qbAutoCenter" : "";
 		}
 
 		function createContent(){
 			content = createElement(settings.contentId, "qbMask");
 
 			content.style.display = "block";
-			content.className = settings.className;
+			content.className = "qbContent" + settings.className;
 			content.innerHTML = settings.html;
 		}
 		
@@ -67,6 +74,7 @@ var QBox = (function(){
 			}
 
 			closeButton.innerHTML = settings.closeHTML;
+			closeButton.className = "qbClose";
 			
 		}
 	
@@ -92,9 +100,6 @@ var QBox = (function(){
 		function hidePopup(){
 			// Hide Mask
 			document.body.removeChild(mask);
-		
-			// Hide Content
-			document.body.removeChild(content);
 			
 			window.onresize = null;
 			
