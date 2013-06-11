@@ -16,8 +16,6 @@ var QBox = (function(){
 		
 		elem = document.createElement("div");
 		elem.id = id;
-			
-		// parentElem.appendChild(elem);
 
 		parentElem.insertBefore(elem, parentElem.firstChild);
 		
@@ -99,9 +97,10 @@ var QBox = (function(){
 
 		function hidePopup(){
 			// Hide Mask
-			document.body.removeChild(mask);
-			
-			window.onresize = null;
+			var maskParent = mask.parentNode;
+			if(maskParent) {
+			  maskParent.removeChild(mask);
+			}
 			
 			settings.onClose();
 		}
