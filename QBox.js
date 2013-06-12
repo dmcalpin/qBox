@@ -80,8 +80,10 @@ var QBox = (function(){
 			createMask();
 
 			if(settings.modal == false){
-				mask.onclick = function(){
-					hidePopup();
+				mask.onclick = function(e){
+					if(e.target === mask || e.target === closeButton){
+						hidePopup();
+					}
 				}
 			} 
 
