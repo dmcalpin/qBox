@@ -60,7 +60,7 @@ var QBox = (function(){
 			content = createElement(settings.contentId, "qbMask");
 
 			content.style.display = "block";
-			content.className = "qbContent" + settings.className;
+			content.className = "qbContent " + settings.className;
 			content.innerHTML = settings.html;
 		}
 		
