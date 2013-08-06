@@ -31,12 +31,12 @@ var QBox = (function(){
 			onOpen : function(){},
 			onClose : function(){},
 			className : "",
-			closeHTML : "&#x2716;", // A special 'X'
+			closeHTML : "&times;",
 			maskId : "qbMask",
 			contentId : "qbContent",
 			closeId : "qbClose",
 			autoCenter : true,
-			blurBackground : true
+			blurBackground : false
 		}; 
 		
 		var	mask,

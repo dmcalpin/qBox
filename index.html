@@ -3,42 +3,25 @@
 	<head>
 		<link rel="stylesheet" href="QBox.css"></link>
 		<style>
-			#qbContent.blueBackground { background-color:#ACF; border:2px solid #00f;}
-			#loading {
-				position: fixed; 
-				background-color:#eee; 
-				z-index:5001; 
-				top:50%;
-				width:100px;
-				text-align:center;
-				font-size:15px;
-				font-weight:bold;
-				padding:10px;
-				border:1px solid #aaa;
+			/* Demo styles */
+			html {
+				font: 100% sans-serif;
 			}
-			#loadingMask { 
-				position: fixed; 
-				top: 0; 
-				left: 0;
-				width:100%; 
-				height:100%; 
-				background-color:#fff; 
-				opacity:.5; 
-				filter: alpha(opacity=50); 
-				z-index:5000; 
+			.qbContent {
+				max-width: 30em;
+				padding: 0.5em;
+				background: chartreuse;
+				box-shadow: 0.125em 0.125em 0.25em rgba(0, 0, 0, 0.25);
+			}
+			.blueBackground {
+				background-color: #acf;
+				border: 2px solid #00f;
 			}
 		</style>
 		
 		<script src="QBox.js"></script>
 		<script>
-		
-			function showLoading(){
-				window.loadingBox = new QBox({html : "Loading...", maskId : "loadingMask", contentId : "loading", showClose : false });
-				loadingBox.show();
-			}
-			
 			window.onload = function(){
-				
 				
 				document.getElementById("defaultPop").onclick = function(e){
 					e.preventDefault();
@@ -79,33 +62,28 @@
 					});
 					qBox.show();
 				}
-				
-				document.getElementById("multiPop").onclick = function(e){
+
+				document.getElementById("blurPop").onclick = function(e){
 					e.preventDefault();
-					
-					window.qBox1 = new QBox({html:"123" });
-					
-					qBox1.show();
-					showLoading()
-					
+					var qBox = new QBox({
+						html : "<h1>Standard Popup</h1><p>...with the background blurred.</p>",
+						blurBackground: true
+					});
+					qBox.show();
 				}
+				
 			}
 		</script>
 	</head>
-	<body style="height:1000;">
-		<header>
-			<h1>Qbox Demo Page</h1>
-		</header>
-		<section>
-			<p>This is the qbox test page</p>
-			<ul>
-				<li><a href="#" id="defaultPop">Popup with no config, just default values</a></li>
-				<li><a href="#" id="modalPop">Pop with modal true (cant click mask to close)</a></li>
-				<li><a href="#" id="noClosePop">Popup with no close button</a></li>
-				<li><a href="#" id="callbackPop">Popup with callbacks and custom close html</a></li>
-				<li><a href="#" id="noAutoPop">Popup not auto centered and custom close button ID</a></li>
-				<li><a href="#" id="multiPop">Multiple types of popups</a></li>
-			</ul>
-		</section>
+	<body>
+		<h1>qBox</h1>
+		<ul>
+			<li><a href="#" id="defaultPop">Popup with no config, just default values</a></li>
+			<li><a href="#" id="modalPop">Pop with modal true (cant click mask to close)</a></li>
+			<li><a href="#" id="noClosePop">Popup with no close button</a></li>
+			<li><a href="#" id="callbackPop">Popup with callbacks and custom close html</a></li>
+			<li><a href="#" id="noAutoPop">Popup not auto centered and custom close button ID</a></li>
+			<li><a href="#" id="blurPop">Popup with background blurred</a></li>
+		</ul>
 	</body>
 </html>
