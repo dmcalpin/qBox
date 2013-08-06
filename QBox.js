@@ -11,18 +11,13 @@ var QBox = (function(){
 		return toObject;
 	}
 	
-	function centerContent(content){
-		content.style.left = "50%";
-		content.style.marginLeft = "-" + content.offsetWidth / 2 + "px";
-	}
-	
 	function createElement(id, parentElemId){
 		var parentElem = parentElemId ? document.getElementById(parentElemId) : document.body;
 		
 		elem = document.createElement("div");
 		elem.id = id;
-			
-		parentElem.appendChild(elem);
+
+		parentElem.insertBefore(elem, parentElem.firstChild);
 		
 		return elem;
 	}
@@ -36,11 +31,12 @@ var QBox = (function(){
 			onOpen : function(){},
 			onClose : function(){},
 			className : "",
-			closeHTML : "&#x2716;", // A special 'X'
+			closeHTML : "&times;",
 			maskId : "qbMask",
 			contentId : "qbContent",
 			closeId : "qbClose",
-			autoCenter : true 
+			autoCenter : true,
+			blurBackground : false
 		}; 
 		
 		var	mask,
@@ -55,13 +51,16 @@ var QBox = (function(){
 			mask = createElement(settings.maskId);
 
 			mask.style.display = "block";
+			mask.className = "qbMask";
+			mask.className += settings.blurBackground ? " qbBlurBackground" : "";
+			mask.className += settings.autoCenter ? " qbAutoCenter" : "";
 		}
 
 		function createContent(){
-			content = createElement(settings.contentId);
+			content = createElement(settings.contentId, "qbMask");
 
 			content.style.display = "block";
-			content.className = settings.className;
+			content.className = "qbContent " + settings.className;
 			content.innerHTML = settings.html;
 		}
 		
@@ -73,6 +72,7 @@ var QBox = (function(){
 			}
 
 			closeButton.innerHTML = settings.closeHTML;
+			closeButton.className = "qbClose";
 			
 		}
 	
@@ -80,19 +80,14 @@ var QBox = (function(){
 			createMask();
 
 			if(settings.modal == false){
-				mask.onclick = function(){
-					hidePopup();
+				mask.onclick = function(e){
+					if(e.target === mask || e.target === closeButton){
+						hidePopup();
+					}
 				}
 			} 
 
 			createContent();
-
-			if(settings.autoCenter){
-				centerContent(content);
-				window.onresize = function(){
-					setTimeout(centerContent, 25);
-				};
-			}
 			
 			if(settings.showClose == true){
 				createCloseButton();
@@ -104,12 +99,10 @@ var QBox = (function(){
 
 		function hidePopup(){
 			// Hide Mask
-			document.body.removeChild(mask);
-		
-			// Hide Content
-			document.body.removeChild(content);
-			
-			window.onresize = null;
+			var maskParent = mask.parentNode;
+			if(maskParent) {
+			  maskParent.removeChild(mask);
+			}
 			
 			settings.onClose();
 		}
@@ -123,6 +116,3 @@ var QBox = (function(){
 	};
 	
 })();
-
-
-

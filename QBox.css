@@ -1,34 +1,30 @@
-#qbMask { 
+.qbMask { 
 	position: fixed; 
 	top: 0; 
+	right: 0; 
+	bottom: 0; 
 	left: 0;
-	width:100%; 
-	height:100%; 
-	background-color:#fff; 
-	opacity:.5; 
-	filter: alpha(opacity=50); 
-	z-index:500; 
+	z-index: 500;
+	text-align: center;
+	background-color: rgba(255, 255, 255, 0.75);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99ffffff, endColorstr=#99ffffff); 
 }
-
-#qbContent { 
-	position: fixed; 
-	width:300px; 
-	background-color:#eee; 
-	z-index:501; 
-	padding:10px; 
-	border:1px solid #333; 
-	border-radius:5px; 
-	box-shadow:0 0 10px #000;
-	top:25%;
+.qbMask.qbBlurBackground ~ * {
+	-webkit-filter: blur(3px);
+	filter: blur(3px);
 }
-
-#qbClose { 
+.qbContent { 
+	position: relative;
+	z-index: 501;
+	text-align: left;
+}
+.qbAutoCenter .qbContent {
+	margin: 10em auto 0;
+}
+.qbClose { 
 	position: absolute; 
-	top:5px; 
-	right: 5px;
-}
-
-#qbClose:hover { 
-	color:#f00; 
-	cursor:pointer; 
+	top: 5px; 
+	right: 9px;
+	cursor:pointer;
+	font: normal 16px/16px sans-serif;
 }
