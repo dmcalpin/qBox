@@ -1,4 +1,4 @@
-.qbMask { 
+.qb-mask { 
 	position: fixed; 
 	top: 0; 
 	right: 0; 
@@ -9,19 +9,19 @@
 	background-color: rgba(255, 255, 255, 0.75);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99ffffff, endColorstr=#99ffffff); 
 }
-.qbMask.qbBlurBackground ~ * {
+.qb-mask.qb-blur-background ~ *:not(.qb-mask) {
 	-webkit-filter: blur(3px);
 	filter: blur(3px);
 }
-.qbContent { 
+.qb-content { 
 	position: relative;
 	z-index: 501;
 	text-align: left;
 }
-.qbAutoCenter .qbContent {
+.qb-auto-center {
 	margin: 10em auto 0;
 }
-.qbClose { 
+.qb-close { 
 	position: absolute; 
 	top: 5px; 
 	right: 9px;

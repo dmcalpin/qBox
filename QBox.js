@@ -11,34 +11,38 @@ var QBox = (function(){
 		return toObject;
 	}
 	
-	function createElement(id, parentElemId){
-		var parentElem = parentElemId ? document.getElementById(parentElemId) : document.body;
+	function makeElement(clazz, parentElemSelector){ // This was more usefull when IDs were used
+		var parentElem = parentElemSelector ? document.querySelector("." + parentElemSelector) : document.body;
 		
 		elem = document.createElement("div");
-		elem.id = id;
+		elem.className = clazz;
 
 		parentElem.insertBefore(elem, parentElem.firstChild);
 		
 		return elem;
 	}
 	
+	var maskClass = "qb-mask",
+		contentClass = "qb-content",
+		closeClass = "qb-close",
+		blurBackgroundClass = "qb-blur-background",
+		autoCenterClass = "qb-auto-center";
+	
 	return function(options){
-		// Private Class Attributes
+		// Customizable Settings
 		var settings = { 
 			html : "",
-			modal : false,		// Will clicking the mask close the popup
-			showClose : true,	// Show the 'X' in the corner of the popup
-			onOpen : function(){},
-			onClose : function(){},
-			className : "",
+			modal : false,			// Will clicking the mask close the popup
+			showClose : true,		// Show the 'X' in the corner of the popup
+			onOpen : function(){},	// Fires when qbox is opened
+			onClose : function(){},	// Fires when qbox is closed
+			className : "",			// Class name to override content styles
 			closeHTML : "&times;",
-			maskId : "qbMask",
-			contentId : "qbContent",
-			closeId : "qbClose",
 			autoCenter : true,
 			blurBackground : false
 		}; 
 		
+		// Private Attributes
 		var	mask,
 			content, 
 			closeButton;
@@ -48,40 +52,40 @@ var QBox = (function(){
 		
 		// Private Class Methods
 		function createMask(){
-			mask = createElement(settings.maskId);
+			mask = makeElement(maskClass);
 
 			mask.style.display = "block";
-			mask.className = "qbMask";
-			mask.className += settings.blurBackground ? " qbBlurBackground" : "";
-			mask.className += settings.autoCenter ? " qbAutoCenter" : "";
+			if( settings.blurBackground ) mask.className += (" " + blurBackgroundClass);
+			
 		}
 
 		function createContent(){
-			content = createElement(settings.contentId, "qbMask");
+			content = makeElement(contentClass, maskClass);
 
 			content.style.display = "block";
-			content.className = "qbContent " + settings.className;
+			content.className += (" " + settings.className);
+			
+			if( settings.autoCenter ) content.className += (" " + autoCenterClass);
+			
 			content.innerHTML = settings.html;
 		}
 		
 		function createCloseButton(){
-			closeButton = createElement(settings.closeId, content.id);
+			closeButton = makeElement(closeClass, contentClass);
 
 			closeButton.onclick = function(){
 				hidePopup();
 			}
 
 			closeButton.innerHTML = settings.closeHTML;
-			closeButton.className = "qbClose";
-			
 		}
 	
 		function showPopup(){
 			createMask();
 
-			if(settings.modal == false){
+			if( !settings.modal ){
 				mask.onclick = function(e){
-					if(e.target === mask || e.target === closeButton){
+					if( e.target === mask || e.target === closeButton ){
 						hidePopup();
 					}
 				}
@@ -89,22 +93,18 @@ var QBox = (function(){
 
 			createContent();
 			
-			if(settings.showClose == true){
-				createCloseButton();
-			}
+			if( settings.showClose ) createCloseButton();
 
-			settings.onOpen();
-
+			settings.onOpen(this);
 		}
 
 		function hidePopup(){
 			// Hide Mask
 			var maskParent = mask.parentNode;
-			if(maskParent) {
-			  maskParent.removeChild(mask);
-			}
 			
-			settings.onClose();
+			if(maskParent) maskParent.removeChild(mask);
+			
+			settings.onClose(this);
 		}
 		
 		// Public Class Methods

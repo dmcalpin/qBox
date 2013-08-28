@@ -7,15 +7,19 @@
 			html {
 				font: 100% sans-serif;
 			}
-			.qbContent {
+			.qb-content {
 				max-width: 30em;
 				padding: 0.5em;
 				background: chartreuse;
 				box-shadow: 0.125em 0.125em 0.25em rgba(0, 0, 0, 0.25);
 			}
-			.blueBackground {
+			.blue-background {
 				background-color: #acf;
 				border: 2px solid #00f;
+			}
+			.qb-loading {
+				margin-top: 100px;
+				background: grey;
 			}
 		</style>
 		
@@ -23,52 +27,70 @@
 		<script>
 			window.onload = function(){
 				
-				document.getElementById("defaultPop").onclick = function(e){
+				document.getElementById("default-pop").onclick = function(e){
 					e.preventDefault();
 					var qBox = new QBox({ html : "<h1>Standard Popup</h1>" });
 					qBox.show();
 				}
 				
-				document.getElementById("modalPop").onclick = function(e){
+				document.getElementById("modal-pop").onclick = function(e){
 					e.preventDefault();
 					var qBox = new QBox({ html : "<h1>Modal Popup</h1>", modal : true });
 					qBox.show();
 				}
 				
-				document.getElementById("noClosePop").onclick = function(e){
+				document.getElementById("no-close-pop").onclick = function(e){
 					e.preventDefault();
 					var qBox = new QBox({ html : "<h1>No Close Button Popup</h1>", showClose : false });
 					qBox.show();
 				}
 				
-				document.getElementById("callbackPop").onclick = function(e){
+				document.getElementById("callback-pop").onclick = function(e){
 					e.preventDefault();
 					var qBox = new QBox({ 
 						html : "<h1>Callbacks</h1><p>I also have a unique classname, and special close button html</p>",
-						onOpen : function(){ alert('on open'); },
+						onOpen : function(elem){ alert('on open'); console.log(elem); },
 						onClose : function(){ alert('on close'); },
 						closeHTML : "<b>Close</b>",
-						className : "blueBackground"
+						className : "blue-background"
 					});
 					qBox.show();
 				}
 				
-				document.getElementById("noAutoPop").onclick = function(e){
+				document.getElementById("no-auto-pop").onclick = function(e){
 					e.preventDefault();
 					var qBox = new QBox({ 
-						html : "<h1>Not Auto Centered</h1><p>Also, my close button has a custom ID</p>",
-						autoCenter : false,
-						closeId : "customCloseID"
+						html : "<h1>Not Auto Centered</h1>",
+						autoCenter : false
 					});
 					qBox.show();
 				}
 
-				document.getElementById("blurPop").onclick = function(e){
+				document.getElementById("blur-pop").onclick = function(e){
 					e.preventDefault();
 					var qBox = new QBox({
 						html : "<h1>Standard Popup</h1><p>...with the background blurred.</p>",
 						blurBackground: true
 					});
+					qBox.show();
+				}
+				
+				document.getElementById("multi-pop").onclick = function(e){
+					e.preventDefault();
+					
+					var qBox = new QBox({
+						html : "<h1>Standard Popup</h1><p>...with the background blurred.</p>",
+						blurBackground: true,
+						modal: true
+					});
+					
+					var qBoxLoading = new QBox({
+						html : "Loading...",
+						className: "qb-loading"
+					});
+					
+					
+					qBoxLoading.show();
 					qBox.show();
 				}
 				
@@ -78,12 +100,13 @@
 	<body>
 		<h1>qBox</h1>
 		<ul>
-			<li><a href="#" id="defaultPop">Popup with no config, just default values</a></li>
-			<li><a href="#" id="modalPop">Pop with modal true (cant click mask to close)</a></li>
-			<li><a href="#" id="noClosePop">Popup with no close button</a></li>
-			<li><a href="#" id="callbackPop">Popup with callbacks and custom close html</a></li>
-			<li><a href="#" id="noAutoPop">Popup not auto centered and custom close button ID</a></li>
-			<li><a href="#" id="blurPop">Popup with background blurred</a></li>
+			<li><a href="#" id="default-pop">Popup with no config, just default values</a></li>
+			<li><a href="#" id="modal-pop">Pop with modal true (cant click mask to close)</a></li>
+			<li><a href="#" id="no-close-pop">Popup with no close button</a></li>
+			<li><a href="#" id="callback-pop">Popup with callbacks and custom close html</a></li>
+			<li><a href="#" id="no-auto-pop">Popup not auto centered and custom close button ID</a></li>
+			<li><a href="#" id="blur-pop">Popup with background blurred</a></li>
+			<li><a href="#" id="multi-pop">Multiple Popups</a></li>
 		</ul>
 	</body>
 </html>

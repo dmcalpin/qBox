@@ -29,9 +29,6 @@ but it will also hide by default via clicking the mask, or the close button.
 	onClose : function(){},
 	className : "",
 	closeHTML : "&times;",
-	maskId : "qbMask",
-	contentId : "qbContent",
-	closeId : "qbClose",
 	autoCenter : true,
 	blurBackground : false
 }
