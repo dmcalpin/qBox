@@ -39,7 +39,8 @@ var QBox = (function(){
 			className : "",			// Class name to override content styles
 			closeHTML : "&times;",
 			autoCenter : true,
-			blurBackground : false
+			blurBackground : false,
+			shrinkToFit : false
 		}; 
 		
 		// Private Attributes
@@ -62,7 +63,7 @@ var QBox = (function(){
 		function createContent(){
 			content = makeElement(contentClass, maskClass);
 
-			content.style.display = "block";
+			content.style.display = settings.shrinkToFit ? "inline-block" : "block";
 			content.className += (" " + settings.className);
 			
 			if( settings.autoCenter ) content.className += (" " + autoCenterClass);

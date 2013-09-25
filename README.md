@@ -30,6 +30,7 @@ but it will also hide by default via clicking the mask, or the close button.
 	className : "",
 	closeHTML : "&times;",
 	autoCenter : true,
-	blurBackground : false
+	blurBackground : false,
+	shrinkToFit : false
 }
 ```
