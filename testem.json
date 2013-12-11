@@ -1,0 +1,18 @@
+{
+	"framework": "qunit",
+
+	"__comment__": "Watching these files for changes:",
+	"src_files": [
+		"./*",
+		"./tests/*"
+	],
+
+	"__comment__": "Before the tests run, we need to compile our CoffeeScript!",
+	"before_tests": "coffee -c ./tests/*.coffee",
+
+	"__comment__": "And for actually performing the tests, we'll be using these files:",
+	"serve_files": [
+		"./QBox.js",
+		"./tests/*.js"
+	]
+}
